@@ -2,15 +2,23 @@
 Este proyecto consiste en un vehículo robótico controlado por WiFi mediante el protocolo MQTT, equipado con una cámara en tiempo real y un sistema de telemetría avanzado. El sistema combina hardware basado en ESP32, control por mando (joystick) y una interfaz de monitoreo.
 
 🌟 Características Principales
+
 🎮 Control por Mando: Script en Python que captura la entrada de un mando (Xbox/PlayStation/Genérico) y traduce los ejes y botones a comandos MQTT en tiempo real.
+
 📡 Comunicación Robusta: Utiliza un broker Mosquitto para una comunicación de baja latencia entre el mando y el vehículo.
+
 🚀 Modo Turbo: Activación dinámica de potencia extra mediante botones del mando.
+
 ⏱️ Sistema de Vueltas (Laps): Sensor infrarrojo TCRT5000 integrado para detectar cruces por meta, calculando tiempos de vuelta y estadísticas de carrera enviadas automáticamente por JSON.
+
 📸 Streaming de Video: Servidor web dedicado en una ESP32-CAM para visualización en vivo del trayecto.
+
 📊 Dashboard de Telemetría: Archivos de configuración para Node-RED, permitiendo visualizar en un panel web la velocidad, el estado de los ejes y los tiempos de carrera.
+
 🛠️ Estructura del Proyecto
+
 1. 🏎️ Carrito/ (Cerebro del Vehículo)
-Carrito.ino
+ Carrito.ino
 : Firmware para ESP32 que gestiona los motores (L298N), el sensor de línea y la suscripción a los comandos MQTT.
 MandoMQTT.py
 : Cliente Python que utiliza pygame y paho-mqtt para convertir tu control físico en un mando remoto WiFi.
@@ -36,5 +44,3 @@ bash
 python MandoMQTT.py
 ¡A correr! 🏁
 Nota: Este proyecto fue diseñado para ofrecer una experiencia de conducción fluida y un sistema de competición integrado mediante el análisis de datos en tiempo real.
-
-Hecho con ❤️ por [Tu Nombre/Usuario de GitHub]
