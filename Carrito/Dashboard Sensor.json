@@ -1,0 +1,368 @@
+[
+    {
+        "id": "728ca729fe6670e7",
+        "type": "tab",
+        "label": "Mando Dashboard 16:9",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "a72d4748185f6281",
+        "type": "mqtt in",
+        "z": "728ca729fe6670e7",
+        "name": "Recibir Todo",
+        "topic": "mando/#",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "broker_local",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 300,
+        "wires": [
+            [
+                "03602ad5c00827e7",
+                "81b56389e27951b0"
+            ]
+        ]
+    },
+    {
+        "id": "03602ad5c00827e7",
+        "type": "switch",
+        "z": "728ca729fe6670e7",
+        "name": "Router",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "regex",
+                "v": ".*eje\\/0",
+                "vt": "str",
+                "case": false
+            },
+            {
+                "t": "regex",
+                "v": ".*eje\\/1",
+                "vt": "str",
+                "case": false
+            },
+            {
+                "t": "regex",
+                "v": ".*eje\\/2",
+                "vt": "str",
+                "case": false
+            },
+            {
+                "t": "regex",
+                "v": ".*eje\\/3",
+                "vt": "str",
+                "case": false
+            },
+            {
+                "t": "regex",
+                "v": ".*eje\\/4",
+                "vt": "str",
+                "case": false
+            },
+            {
+                "t": "regex",
+                "v": ".*eje\\/5",
+                "vt": "str",
+                "case": false
+            },
+            {
+                "t": "regex",
+                "v": ".*boton.*",
+                "vt": "str",
+                "case": false
+            },
+            {
+                "t": "regex",
+                "v": ".*hat.*",
+                "vt": "str",
+                "case": false
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 8,
+        "x": 290,
+        "y": 300,
+        "wires": [
+            [
+                "c1eac3f483d7929c"
+            ],
+            [
+                "c1eac3f483d7929c"
+            ],
+            [
+                "fa0ffb14f3b0a7c3"
+            ],
+            [
+                "fa0ffb14f3b0a7c3"
+            ],
+            [
+                "d6611283c431c353"
+            ],
+            [
+                "2fc527270e9bb87f"
+            ],
+            [
+                "0d6662eb405994d0"
+            ],
+            [
+                "5e556b6d333dbd18"
+            ]
+        ]
+    },
+    {
+        "id": "d6611283c431c353",
+        "type": "ui_gauge",
+        "z": "728ca729fe6670e7",
+        "name": "Gatillo L",
+        "group": "01df994d1db6567c",
+        "order": 2,
+        "width": "5",
+        "height": "5",
+        "gtype": "compass",
+        "title": "Gatillo Izquierdo",
+        "label": "",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 600,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "2fc527270e9bb87f",
+        "type": "ui_gauge",
+        "z": "728ca729fe6670e7",
+        "name": "Gatillo R",
+        "group": "a222e8bd1315af2a",
+        "order": 2,
+        "width": "5",
+        "height": "5",
+        "gtype": "compass",
+        "title": "Gatillo Derecho",
+        "label": "",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 900,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "0d6662eb405994d0",
+        "type": "ui_text",
+        "z": "728ca729fe6670e7",
+        "group": "800c05cac4f3192e",
+        "order": 1,
+        "width": "5",
+        "height": "5",
+        "name": "Estado Botón",
+        "label": "BOTÓN",
+        "format": "<div style=\"font-size: 24px; color: #00ff00;\">{{msg.topic.split('/').pop()}} : {{msg.payload}}</div>",
+        "layout": "col-center",
+        "className": "",
+        "style": true,
+        "font": "Arial Black,Arial Black,Gadget,sans-serif",
+        "fontSize": "40",
+        "color": "#000000",
+        "x": 760,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "5e556b6d333dbd18",
+        "type": "ui_template",
+        "z": "728ca729fe6670e7",
+        "group": "800c05cac4f3192e",
+        "name": "Visualizador Cruceta",
+        "order": 2,
+        "width": "5",
+        "height": "5",
+        "format": "<script>\n(function(scope) {\n    scope.$watch('msg', function(msg) {\n        if (!scope.hatState) scope.hatState = { x: 0, y: 0 };\n        if (msg) {\n            var parts = msg.payload.toString().split(',');\n            if (parts.length === 2) {\n                scope.hatState.x = parseInt(parts[0]);\n                scope.hatState.y = parseInt(parts[1]);\n            }\n        }\n    });\n})(scope);\n</script>\n<style>\n    .dpad-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }\n    .dpad-row { display: flex; }\n    .dpad-btn { \n        width: 40px; height: 40px; margin: 2px; \n        background: #333; border: 1px solid #555; border-radius: 4px;\n        display: flex; align-items: center; justify-content: center;\n        color: #888; font-weight: bold;\n    }\n    .dpad-center { width: 40px; height: 40px; margin: 2px; background: transparent; }\n    .dpad-btn.active { background: #ffa500; color: #000; box-shadow: 0 0 10px #ffa500; border-color: #ffcc00; }\n</style>\n<div class=\"dpad-container\">\n    <div class=\"dpad-row\">\n        <div class=\"dpad-btn\" ng-class=\"{'active': hatState.y === 1}\">▲</div>\n    </div>\n    <div class=\"dpad-row\">\n        <div class=\"dpad-btn\" ng-class=\"{'active': hatState.x === -1}\">◀</div>\n        <div class=\"dpad-center\"></div>\n        <div class=\"dpad-btn\" ng-class=\"{'active': hatState.x === 1}\">▶</div>\n    </div>\n    <div class=\"dpad-row\">\n        <div class=\"dpad-btn\" ng-class=\"{'active': hatState.y === -1}\">▼</div>\n    </div>\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 760,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6657c717deb20039",
+        "type": "mqtt out",
+        "z": "728ca729fe6670e7",
+        "name": "Enviar a ESP32",
+        "topic": "esp32/input",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "broker_local",
+        "x": 360,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "81b56389e27951b0",
+        "type": "function",
+        "z": "728ca729fe6670e7",
+        "name": "Formatear Datos",
+        "func": "if (msg.topic.includes(\"eje/0\")) msg.payload = \"LX:\" + msg.payload;\nelse if (msg.topic.includes(\"eje/1\")) msg.payload = \"LY:\" + msg.payload;\nelse if (msg.topic.includes(\"eje/2\")) msg.payload = \"RX:\" + msg.payload;\nelse if (msg.topic.includes(\"eje/3\")) msg.payload = \"RY:\" + msg.payload;\nelse if (msg.topic.includes(\"eje/4\")) msg.payload = \"TL:\" + msg.payload;\nelse if (msg.topic.includes(\"eje/5\")) msg.payload = \"TR:\" + msg.payload;\nelse if (msg.topic.includes(\"eje/6\")) msg.payload = \"DX:\" + msg.payload;\nelse if (msg.topic.includes(\"eje/7\")) msg.payload = \"DY:\" + msg.payload;\nelse if (msg.topic.includes(\"boton\")) {\n    var parts = msg.topic.split(\"/\");\n    var btn = parts[parts.length - 1];\n    msg.payload = \"BTN\" + btn + \":\" + msg.payload;\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 420,
+        "wires": [
+            [
+                "6657c717deb20039"
+            ]
+        ]
+    },
+    {
+        "id": "c1eac3f483d7929c",
+        "type": "ui_template",
+        "z": "728ca729fe6670e7",
+        "group": "01df994d1db6567c",
+        "name": "Visualizador Joy Izquierdo",
+        "order": 1,
+        "width": 6,
+        "height": 6,
+        "format": "<script>\n(function(scope) {\n    scope.$watch('msg', function(msg) {\n        if (!scope.joyState) scope.joyState = { x: 0, y: 0 };\n        if (msg) {\n            if (msg.topic.indexOf('eje/0') !== -1) scope.joyState.x = parseInt(msg.payload) / 10;\n            if (msg.topic.indexOf('eje/1') !== -1) scope.joyState.y = parseInt(msg.payload) / 10;\n        }\n    });\n})(scope);\n</script>\n<style>\n    .joy-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }\n</style>\n<div class=\"joy-container\">\n    <h4 style=\"margin-bottom: 10px;\">Joystick Izquierdo</h4>\n    <svg width=\"200\" height=\"200\" style=\"border: 2px solid #555; background: #111; border-radius: 50%;\">\n        <line x1=\"100\" y1=\"0\" x2=\"100\" y2=\"200\" stroke=\"#333\" />\n        <line x1=\"0\" y1=\"100\" x2=\"200\" y2=\"100\" stroke=\"#333\" />\n        <circle \n            ng-attr-cx=\"{{ (joyState.x || 0) + 100 }}\" \n            ng-attr-cy=\"{{ (joyState.y || 0) + 100 }}\" \n            r=\"12\" fill=\"#39ff14\" stroke=\"white\" stroke-width=\"2\" />\n    </svg>\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 550,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fa0ffb14f3b0a7c3",
+        "type": "ui_template",
+        "z": "728ca729fe6670e7",
+        "group": "a222e8bd1315af2a",
+        "name": "Visualizador Joy Derecho",
+        "order": 1,
+        "width": 6,
+        "height": 6,
+        "format": "<script>\n(function(scope) {\n    scope.$watch('msg', function(msg) {\n        if (!scope.joyStateR) scope.joyStateR = { x: 0, y: 0 };\n        if (msg) {\n            if (msg.topic.indexOf('eje/2') !== -1) scope.joyStateR.x = parseInt(msg.payload) / 10;\n            if (msg.topic.indexOf('eje/3') !== -1) scope.joyStateR.y = parseInt(msg.payload) / 10;\n        }\n    });\n})(scope);\n</script>\n<style>\n    .joy-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }\n</style>\n<div class=\"joy-container\">\n    <h4 style=\"margin-bottom: 10px;\">Joystick Derecho</h4>\n    <svg width=\"200\" height=\"200\" style=\"border: 2px solid #555; background: #111; border-radius: 50%;\">\n        <line x1=\"100\" y1=\"0\" x2=\"100\" y2=\"200\" stroke=\"#333\" />\n        <line x1=\"0\" y1=\"100\" x2=\"200\" y2=\"100\" stroke=\"#333\" />\n        <circle \n            ng-attr-cx=\"{{ (joyStateR.x || 0) + 100 }}\" \n            ng-attr-cy=\"{{ (joyStateR.y || 0) + 100 }}\" \n            r=\"12\" fill=\"#0099ff\" stroke=\"white\" stroke-width=\"2\" />\n    </svg>\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "x": 910,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "broker_local",
+        "type": "mqtt-broker",
+        "name": "Mi Broker Local",
+        "broker": "192.168.0.100",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": ""
+    },
+    {
+        "id": "01df994d1db6567c",
+        "type": "ui_group",
+        "name": "Mando Izquierdo",
+        "tab": "5ae1e71f697f6dbb",
+        "order": 1,
+        "disp": true,
+        "width": "8",
+        "collapse": false
+    },
+    {
+        "id": "a222e8bd1315af2a",
+        "type": "ui_group",
+        "name": "Mando Derecho",
+        "tab": "5ae1e71f697f6dbb",
+        "order": 3,
+        "disp": true,
+        "width": "8",
+        "collapse": false
+    },
+    {
+        "id": "800c05cac4f3192e",
+        "type": "ui_group",
+        "name": "Estado Central",
+        "tab": "5ae1e71f697f6dbb",
+        "order": 2,
+        "disp": true,
+        "width": "8",
+        "collapse": false
+    },
+    {
+        "id": "5ae1e71f697f6dbb",
+        "type": "ui_tab",
+        "name": "Control Mando",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "1993d22c19cf630c",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-dashboard": "3.6.6"
+        }
+    }
+]

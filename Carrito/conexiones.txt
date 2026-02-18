@@ -1,0 +1,33 @@
+CONEXIONES ESP32 -> L298N
+
+DRIVER L298N:
+-------------------------------------------
+Pines del Driver    | Pines del ESP32
+-------------------------------------------
+MOTOR A (Traccion / Trasero):
+ENA (Habilitar A)   -> GPIO 32  (Control Velocidad PWM)
+IN1 (Entrada 1)     -> GPIO 33
+IN2 (Entrada 2)     -> GPIO 25
+
+MOTOR B (Direccion / Delantero):
+ENB (Habilitar B)   -> GPIO 14  (Control Velocidad PWM)
+IN3 (Entrada 3)     -> GPIO 26
+IN4 (Entrada 4)     -> GPIO 27
+
+ALIMENTACION:
+VCC (12V/External)  -> Batería (+)
+GND (Tierra)        -> Batería (-) y ESP32 GND (Común)
+5V                  -> (Opcional si usas el regulador del L298N para alimentar el ESP32)
+
+NOTAS:
+- Asegurarse de tener GND comun entre el driver y el ESP32.
+- Retirar los jumpers de ENA/ENB en el driver L298N para conectar los pines PWM del ESP32.
+
+SENSOR INFRAROJO MDU-SEN-MH-TCRT5000:
+-------------------------------------------
+PIN            | ESP32
+-------------------------------------------
+VCC            | 3.3V / 5V
+GND            | GND
+DO (Digital)   | GPIO 13
+AO (Analog)    | No conectado (Salida analógica: Mide la intensidad de luz reflejada / distancia)

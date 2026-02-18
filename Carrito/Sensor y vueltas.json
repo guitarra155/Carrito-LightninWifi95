@@ -1,0 +1,277 @@
+[
+    {
+        "id": "tab_sensor_only",
+        "type": "tab",
+        "label": "Sensor y Vueltas",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "mqtt_in_sensor_only",
+        "type": "mqtt in",
+        "z": "tab_sensor_only",
+        "name": "Entrada Sensor",
+        "topic": "carrito/sensor",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "b8e9c3b73b9c2d56",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 200,
+        "wires": [
+            [
+                "file_saver_sensor",
+                "func_parse_metrics",
+                "func_prep_chart"
+            ]
+        ]
+    },
+    {
+        "id": "file_saver_sensor",
+        "type": "file",
+        "z": "tab_sensor_only",
+        "name": "Log JSON",
+        "filename": "c:\\ProyectoP3\\Carrito\\sensor_metrics.json",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 400,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "func_parse_metrics",
+        "type": "function",
+        "z": "tab_sensor_only",
+        "name": "Parsear Vueltas",
+        "func": "// Variables desde el JSON\nvar lap = msg.payload.lap;\nvar event = msg.payload.event;\n\n// Formatear tiempos\nvar lapTime = \"--\";\nif (msg.payload.lap_time_ms) {\n    lapTime = (msg.payload.lap_time_ms / 1000).toFixed(2) + \" s\";\n}\n\nvar totalTime = \"--\";\nif (msg.payload.total_time_ms) {\n    totalTime = (msg.payload.total_time_ms / 1000).toFixed(2) + \" s\";\n}\n\n// Payload para Toast solo si es evento importante\nvar toastMsg = null;\nif (event == \"start\") toastMsg = { payload: \"Inició la Carrera!\" };\nif (event == \"lap\") toastMsg = { payload: \"Vuelta \" + lap + \" Completada!\" };\n\nreturn [\n    { payload: lap },\n    { payload: lapTime },\n    { payload: totalTime },\n    toastMsg\n];",
+        "outputs": 4,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 200,
+        "wires": [
+            [
+                "ui_text_lap_val"
+            ],
+            [
+                "ui_text_lap_time_val"
+            ],
+            [
+                "ui_text_total_time_val"
+            ],
+            [
+                "ui_toast_notif"
+            ]
+        ]
+    },
+    {
+        "id": "func_prep_chart",
+        "type": "function",
+        "z": "tab_sensor_only",
+        "name": "Extraer Duración",
+        "func": "// Usar el campo nuevo crossing_duration_ms o fallback a duration\nmsg.payload = msg.payload.crossing_duration_ms || msg.payload.duration || 0;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 300,
+        "wires": [
+            [
+                "ui_chart_dur"
+            ]
+        ]
+    },
+    {
+        "id": "ui_text_lap_val",
+        "type": "ui_text",
+        "z": "tab_sensor_only",
+        "group": "group_metrics",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Vuelta Actual",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 670,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "ui_text_lap_time_val",
+        "type": "ui_text",
+        "z": "tab_sensor_only",
+        "group": "group_metrics",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Tiempo Última Vuelta",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 680,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "ui_text_total_time_val",
+        "type": "ui_text",
+        "z": "tab_sensor_only",
+        "group": "group_metrics",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Tiempo Total Carrera",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 700,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "ui_toast_notif",
+        "type": "ui_toast",
+        "z": "tab_sensor_only",
+        "position": "top_right",
+        "displayTime": "3",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "",
+        "topic": "Carrera",
+        "name": "Notificacion",
+        "x": 730,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "ui_chart_dur",
+        "type": "ui_chart",
+        "z": "tab_sensor_only",
+        "name": "Gráfica Duración",
+        "group": "group_chart",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "Duración Cruce (ms)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 650,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b8e9c3b73b9c2d56",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "192.168.0.100",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "group_metrics",
+        "type": "ui_group",
+        "z": "tab_sensor_only",
+        "name": "Métricas de Carrera",
+        "tab": "ui_tab_sensor",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "group_chart",
+        "type": "ui_group",
+        "z": "tab_sensor_only",
+        "name": "Gráfica de Cruce",
+        "tab": "ui_tab_sensor",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "ui_tab_sensor",
+        "type": "ui_tab",
+        "z": "tab_sensor_only",
+        "name": "Dashboard Sensor",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "8a83a5af2978414a",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-dashboard": "3.6.6"
+        }
+    }
+]

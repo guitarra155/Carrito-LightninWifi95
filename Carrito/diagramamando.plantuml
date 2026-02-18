@@ -1,0 +1,53 @@
+@startuml diagramamando
+title Flujo de Funcionamiento - MandoMQTT.py
+
+start
+
+partition "Inicialización" {
+    :Inicializar Pygame (Joystick);
+    :Inicializar Cliente MQTT;
+    if (¿Hay mando conectado?) then (No)
+        :Mostrar error y salir;
+        stop
+    else (Sí)
+        :Conectar a Broker MQTT (192.168.0.101);
+        :Iniciar loop de red MQTT;
+    endif
+}
+
+partition "Bucle Principal (60 FPS)" {
+    while (¿Ejecutando?) is (Sí)
+        :Capturar Eventos de Pygame;
+        
+        if (Evento == Botón) then (Presionar/Soltar)
+            :Publicar en Topic:\n""mando/boton/{id}"";
+        
+        elseif (Evento == Joystick/Gatillo) then (Movimiento)
+            :Aplicar Deadzone (Corte de ruido);
+            if (¿Es Gatillo?) then (Sí)
+                :Mapear -1..1 a 0..1000;
+            else (No)
+                :Mapear -1..1 a -1000..1000;
+            endif
+            
+            if (¿Cambio > MIN_CHANGE?) then (Sí)
+                :Publicar en Topic:\n""mando/eje/{id}"";
+                :Actualizar último valor enviado;
+            endif
+            
+        elseif (Evento == Cruceta/Hat) then (Dirección)
+            :Publicar en Topic:\n""mando/hat/{id}"";
+        endif
+        
+        :Esperar siguiente frame (Clock.tick);
+    endwhile (No)
+}
+
+partition "Cierre" {
+    :Detener loop MQTT;
+    :Desconectar del Broker;
+    :Cerrar Pygame;
+}
+
+stop
+@enduml
