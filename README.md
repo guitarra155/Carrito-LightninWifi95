@@ -19,28 +19,55 @@ Este proyecto consiste en un vehículo robótico controlado por WiFi mediante el
 
 1. 🏎️ Carrito/ (Cerebro del Vehículo)
  Carrito.ino
+
 : Firmware para ESP32 que gestiona los motores (L298N), el sensor de línea y la suscripción a los comandos MQTT.
+
 MandoMQTT.py
+
 : Cliente Python que utiliza pygame y paho-mqtt para convertir tu control físico en un mando remoto WiFi.
+
 Dashboard/: Archivos 
+
 .json
+
  listos para importar en Node-RED y tener un monitor profesional del estado del carro.
-2. 📷 CameraWebServer/ (Ojo del Piloto)
+2
+. 📷 CameraWebServer/ (Ojo del Piloto)
+
 Firmware optimizado para ESP32-CAM (AI-Thinker) que levanta un servidor de video en streaming estable para pilotar en primera persona.
+
 🚀 Requisitos Rápidos
+
 Hardware: ESP32, ESP32-CAM, Driver L298N, 2 Motores DC, Sensor Infrarrojo TCRT5000.
+
 Software:
+
 Arduino IDE (con soporte para ESP32).
+
 Python 3.12+ (para el script del mando).
+
 Broker MQTT (como Mosquitto).
+
 Node-RED (opcional, para el dashboard).
+
 🔧 Configuración Rápida
+
 Sube los archivos 
+
 .ino
+
  a sus respectivas placas ESP32.
+
 Asegúrate de que todos los dispositivos estén en la red WiFi LightninWifi95.
+
 Ejecuta el script de control:
+
 bash
+
 python MandoMQTT.py
+
 ¡A correr! 🏁
-Nota: Este proyecto fue diseñado para ofrecer una experiencia de conducción fluida y un sistema de competición integrado mediante el análisis de datos en tiempo real.
+
+Nota: Este proyecto fue diseñado para ofrecer una experiencia de conducción fluida y un sistema de competición integrado mediante el 
+
+análisis de datos en tiempo real.
