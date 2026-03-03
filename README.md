@@ -70,6 +70,4 @@ python MandoMQTT.py
 
 ¡A correr! 🏁
 
-Nota: Este proyecto fue diseñado para ofrecer una experiencia de conducción fluida y un sistema de competición integrado mediante el 
-
-análisis de datos en tiempo real.
+Nota: Este proyecto fue diseñado para ofrecer una experiencia de conducción fluida y un sistema de competición simple integrado mediante el análisis de datos en tiempo real.
