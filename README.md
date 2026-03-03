@@ -1,17 +1,19 @@
 🏎️ Carrito-LightninWifi95 🚀
-Este proyecto consiste en un vehículo robótico controlado por WiFi mediante el protocolo MQTT, equipado con una cámara en tiempo real y un sistema de telemetría avanzado. El sistema combina hardware basado en ESP32, control por mando (joystick) y una interfaz de monitoreo.
+Este proyecto consiste en un vehículo robótico controlado por WiFi mediante el protocolo MQTT, equipado con una cámara en tiempo real y un sistema de telemetría simple. El sistema en cierta manera combina hardware basado en ESP32, control por mando (joystick) - (cualquier mando que detecte el dispositivo) y una interfaz de monitoreo en Node-Red.
 
 🌟 Características Principales
 
 🎮 Control por Mando: Script en Python que captura la entrada de un mando (Xbox/PlayStation/Genérico) y traduce los ejes y botones a comandos MQTT en tiempo real.
 
-📡 Comunicación Robusta: Utiliza un broker Mosquitto para una comunicación de baja latencia entre el mando y el vehículo.
+📡 Comunicación: Utiliza un broker Mosquitto para una comunicación de baja latencia entre el mando y el vehículo.
 
-🚀 Modo Turbo: Activación dinámica de potencia extra mediante botones del mando.
+🚀 Modo Turbo jejejeje : Activación dinámica de potencia extra mediante botones del mando.
+
+La cuestión es simular la jugabilidad de los videojuegos de automóviles pero usando carritos de juguete.
 
 ⏱️ Sistema de Vueltas (Laps): Sensor infrarrojo TCRT5000 integrado para detectar cruces por meta, calculando tiempos de vuelta y estadísticas de carrera enviadas automáticamente por JSON.
 
-📸 Streaming de Video: Servidor web dedicado en una ESP32-CAM para visualización en vivo del trayecto.
+📸 Streaming de Video: Servidor web en una ESP32-CAM para visualización en vivo del trayecto, ayuda si tienes un buen rputer , en mi caso use uno de 7dBi, importante que mantenga la conexión estable.
 
 📊 Dashboard de Telemetría: Archivos de configuración para Node-RED, permitiendo visualizar en un panel web la velocidad, el estado de los ejes y los tiempos de carrera.
 
